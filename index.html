@@ -570,8 +570,9 @@ footer.site .wrap{align-items:flex-start}
         paint();
       }).catch(function(){
         if (my !== seq) return;
-        note('Søgningen virker ikke lige nu. Skriv oplysningerne selv herunder.');
-        fillFirm({name: q}, false);
+        if (now){ $('results').innerHTML = ''; fillFirm({name: q}, false); return; }
+        note('Søgningen virker ikke lige nu. <button type="button" class="link" id="manual3">Skriv oplysningerne selv</button>, når du har skrevet navnet.');
+        var m = $('manual3'); if (m) m.onclick = function(){ $('results').innerHTML = ''; fillFirm({name: $('q').value.trim()}, false); };
       });
     }, now ? 0 : 250);
   }
