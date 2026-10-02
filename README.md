@@ -5,7 +5,7 @@ Klar til Cloudflare Pages. Bygget 2. oktober 2026.
 ## Indhold
 - `index.html`: hele siden (billeder og skabeloner er indbygget).
 - `favicon.svg`: ikonet i browserfanen.
-- `functions/api/cvr.js`: CVR-søgning via cvrapi.dk.
+- `functions/api/cvr.js`: CVR-søgning med forslag, mens man skriver. Bruger Erhvervsstyrelsens gratis CVR-adgang, når `CVR_USER` og `CVR_PASS` er sat i Cloudflare. Ellers prøver den cvrapi.dk.
 - `functions/api/lead.js`: sender hver henvendelse til din mail via Web3Forms.
 
 ## Sådan kommer den online (anbefalet: via GitHub)
@@ -19,5 +19,5 @@ Klar til Cloudflare Pages. Bygget 2. oktober 2026.
 Workers & Pages > Create > Pages > Upload assets > træk mappen ind. Siden virker, men CVR-søgning og formularer kræver Functions, som ikke kommer med ved træk-og-slip. Folk kan stadig skrive deres oplysninger selv og ringe til dig.
 
 ## Godt at vide
-- cvrapi.dk er gratis med et begrænset antal opslag pr. dag. Svar caches i et døgn.
+- Adgang til CVR-data søges gratis hos Erhvervsstyrelsen på cvrselvbetjening@erst.dk. Søgninger caches i et døgn.
 - Anmeldelser er ikke med, før du har rigtige anmeldelser.

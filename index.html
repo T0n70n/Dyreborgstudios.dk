@@ -327,7 +327,7 @@ footer.site .wrap{align-items:flex-start}
           <button class="btn btn-a" type="submit">Søg</button>
         </form>
         <ul id="results" class="results" aria-live="polite"></ul>
-        <p class="note">Vi slår dit firma op i CVR-registret. Det tager et øjeblik.</p>
+        <p class="note">Begynd at skrive navnet, så foreslår vi firmaer fra CVR-registret.</p>
         <button type="button" class="link" id="manual">Kan du ikke finde dit firma? Skriv oplysningerne selv</button>
 
         <form id="firm" class="firm" hidden>
@@ -460,7 +460,7 @@ footer.site .wrap{align-items:flex-start}
 .results{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .results:empty{display:none}
 .results button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font:inherit;cursor:pointer;color:var(--ink)}
-.results button:hover{border-color:var(--accent);background:var(--accent-soft)}
+.results button:hover,.results button.act{border-color:var(--accent);background:var(--accent-soft)}
 .results b{display:block}
 .results small{color:var(--muted)}
 .results .pick{font-weight:700;color:var(--accent);white-space:nowrap}
@@ -539,29 +539,56 @@ footer.site .wrap{align-items:flex-start}
     if (/anlægsgartn|landskab|have|gartner/.test(t)) return 'anlaegsgartner';
     return '';
   }
-  function search(){
-    var q = $('q').value.trim(), ul = $('results');
-    ul.innerHTML = ''; $('firm').hidden = true;
-    if (!q) return;
-    ul.innerHTML = '<li class="none">Søger…</li>';
-    fetch('/api/cvr?q=' + encodeURIComponent(q)).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
-      ul.innerHTML = '';
-      if (!d || !d.name){ ul.innerHTML = '<li class="none">Intet firma fundet. Prøv CVR-nummeret, eller skriv oplysningerne selv.</li>'; return; }
-      var f = {name: d.name, cvr: d.cvr || '', addr: [d.address, [d.zip, d.city].filter(Boolean).join(' ')].filter(Boolean).join(', '), city: d.city || '', phone: d.phone || '', mail: d.email || '', trade: guessTrade(d.industry)};
-      var li = document.createElement('li'), b = document.createElement('button');
-      b.type = 'button';
-      b.innerHTML = '<span><b>'+esc(f.name)+'</b><small>CVR '+esc(f.cvr)+' · '+esc(f.addr)+'</small></span><span class="pick">Vælg</span>';
-      b.onclick = function(){ ul.innerHTML = ''; fillFirm(f, true); };
-      li.appendChild(b); ul.appendChild(li);
-    }).catch(function(){
-      ul.innerHTML = '<li class="none">Vi kunne ikke slå op lige nu. Skriv oplysningerne selv herunder.</li>';
-      fillFirm({}, false);
-    });
+  var timer = null, seq = 0, hits = [], act = -1;
+  function toFirm(d){
+    return {name: d.name, cvr: d.cvr || '', addr: [d.address, [d.zip, d.city].filter(Boolean).join(' ')].filter(Boolean).join(', '), city: d.city || '', phone: d.phone || '', mail: d.email || '', trade: guessTrade(d.industry)};
   }
+  function paint(){
+    var ul = $('results'); ul.innerHTML = '';
+    hits.forEach(function(f, i){
+      var li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.id = 'opt-' + i; b.setAttribute('role', 'option');
+      if (i === act){ b.className = 'act'; b.setAttribute('aria-selected', 'true'); }
+      b.innerHTML = '<span><b>'+esc(f.name)+'</b><small>CVR '+esc(f.cvr)+(f.addr ? ' · '+esc(f.addr) : '')+'</small></span><span class="pick">Vælg</span>';
+      b.onmousedown = function(e){ e.preventDefault(); };
+      b.onclick = function(){ choose(i); };
+      li.appendChild(b); ul.appendChild(li);
+    });
+    $('q').setAttribute('aria-activedescendant', act > -1 ? 'opt-' + act : '');
+  }
+  function note(t){ $('results').innerHTML = '<li class="none">' + t + '</li>'; }
+  function choose(i){ var f = hits[i]; hits = []; act = -1; $('results').innerHTML = ''; $('q').value = f.name; fillFirm(f, true); }
+  function search(now){
+    var q = $('q').value.trim(), my = ++seq;
+    clearTimeout(timer);
+    if (q.length < 2){ hits = []; $('results').innerHTML = ''; return; }
+    timer = setTimeout(function(){
+      fetch('/api/cvr?q=' + encodeURIComponent(q)).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
+        if (my !== seq) return;
+        hits = (d.results || []).map(toFirm); act = -1;
+        if (!hits.length){ note('Ingen firmaer fundet endnu. Skriv mere af navnet eller hele CVR-nummeret, eller <button type="button" class="link" id="manual2">skriv oplysningerne selv</button>.'); var m = $('manual2'); if (m) m.onclick = function(){ $('results').innerHTML = ''; fillFirm({name: q}, false); }; return; }
+        paint();
+      }).catch(function(){
+        if (my !== seq) return;
+        note('Søgningen virker ikke lige nu. Skriv oplysningerne selv herunder.');
+        fillFirm({name: q}, false);
+      });
+    }, now ? 0 : 250);
+  }
+  $('q').setAttribute('role', 'combobox'); $('q').setAttribute('aria-autocomplete', 'list'); $('q').setAttribute('aria-controls', 'results');
+  $('results').setAttribute('role', 'listbox');
+  $('q').addEventListener('input', function(){ $('firm').hidden = true; search(false); });
+  $('q').addEventListener('keydown', function(e){
+    if (!hits.length) return;
+    if (e.key === 'ArrowDown'){ e.preventDefault(); act = Math.min(act + 1, hits.length - 1); paint(); }
+    else if (e.key === 'ArrowUp'){ e.preventDefault(); act = Math.max(act - 1, 0); paint(); }
+    else if (e.key === 'Enter' && act > -1){ e.preventDefault(); choose(act); }
+    else if (e.key === 'Escape'){ hits = []; $('results').innerHTML = ''; }
+  });
   function sendLead(data){
     return fetch('/api/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)}).then(function(r){ return r.ok; }).catch(function(){ return false; });
   }
-  $('find').addEventListener('submit', function(e){ e.preventDefault(); search(); });
+  $('find').addEventListener('submit', function(e){ e.preventDefault(); if (hits.length) choose(act > -1 ? act : 0); else search(true); });
   $('manual').onclick = function(){ $('results').innerHTML = ''; fillFirm({}, false); };
 
   $('firm').addEventListener('submit', function(e){
