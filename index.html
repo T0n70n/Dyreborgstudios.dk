@@ -335,7 +335,7 @@ footer.site .wrap{align-items:flex-start}
       <p class="label">Gratis udkast</p>
       <h2>Se din nye hjemmeside <span class="it">på et minut</span></h2>
       <ol class="track" aria-label="Trin">
-        <li id="t-1" class="on"><span>1</span><div><b>Find dit firma</b><small>CVR-nummer eller navn</small></div></li>
+        <li id="t-1" class="on"><span>1</span><div><b>Find dit firma</b><small>Bare skriv navnet</small></div></li>
         <li id="t-2"><span>2</span><div><b>Vælg dit fag</b><small>Så siden passer til dig</small></div></li>
         <li id="t-3"><span>3</span><div><b>Se din side</b><small>Med dit navn og nummer</small></div></li>
       </ol>
@@ -356,32 +356,35 @@ footer.site .wrap{align-items:flex-start}
       <!-- step 1 -->
       <div id="s-1" class="step">
         <p class="kick">Trin 1 af 3</p>
-        <h3 class="st">Find dit firma</h3>
+        <h3 class="st">Hvad hedder dit firma?</h3>
+        <p class="lead1">Skriv navnet, så sætter vi det ind på din nye side.</p>
         <form id="find" class="find" role="search">
           <label for="q" class="sr">CVR-nummer eller firmanavn</label>
           <svg class="mag" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-          <input id="q" name="q" placeholder="CVR-nummer eller firmanavn" autocomplete="off">
-          <button class="btn btn-a" type="submit">Søg</button>
+          <input id="q" name="q" placeholder="Fx Hansens VVS" autocomplete="off" enterkeyhint="search">
+          <button class="btn btn-a" type="submit">Find</button>
         </form>
         <ul id="results" class="results" aria-live="polite"></ul>
-        <p class="note">Begynd at skrive navnet, så foreslår vi firmaer fra CVR-registret.</p>
-        <button type="button" class="link" id="manual">Kan du ikke finde dit firma? Skriv oplysningerne selv</button>
+        <p class="note">Vi foreslår firmaer fra CVR-registret, mens du skriver.</p>
+        <button type="button" class="link" id="manual">Kan du ikke finde det? Skriv det selv</button>
 
         <form id="firm" class="firm" hidden>
-          <p class="found" id="found"></p>
-          <div class="row2">
-            <label for="c-name">Firmanavn<input id="c-name" required></label>
-            <label for="c-phone">Telefon på siden<input id="c-phone" type="tel" inputmode="tel" required></label>
+          <div class="found" id="found"></div>
+          <div class="must">
+            <label for="c-name" id="l-name">Firmanavn<input id="c-name" required autocomplete="organization"></label>
+            <label for="c-phone">Telefonnummer<small class="hint">Det nummer, kunderne skal ringe på</small><input id="c-phone" type="tel" inputmode="tel" required autocomplete="tel"></label>
+            <label for="c-city" id="l-city">By<input id="c-city" required autocomplete="address-level2"></label>
           </div>
-          <div class="row2">
-            <label for="c-addr">Adresse<input id="c-addr"></label>
-            <label for="c-city">By<input id="c-city" required></label>
-          </div>
-          <div class="row2">
-            <label for="c-mail">Mail på siden<input id="c-mail" type="email"></label>
-            <label for="c-cvr">CVR-nummer<input id="c-cvr" inputmode="numeric"></label>
-          </div>
-          <button class="btn btn-a" type="submit">Videre</button>
+          <details class="more" id="f-more"><summary>Adresse, mail og CVR <small>(kan vente)</small></summary>
+            <div class="more-in">
+              <label for="c-addr">Adresse<input id="c-addr" autocomplete="street-address"></label>
+              <div class="row2">
+                <label for="c-mail">Mail<input id="c-mail" type="email" autocomplete="email"></label>
+                <label for="c-cvr">CVR-nummer<input id="c-cvr" inputmode="numeric"></label>
+              </div>
+            </div>
+          </details>
+          <button class="btn btn-a btn-go" type="submit">Videre til fag <span aria-hidden="true">→</span></button>
         </form>
       </div>
 
@@ -482,6 +485,26 @@ footer.site .wrap{align-items:flex-start}
 .find input{flex:1 1 240px;min-width:0;font-size:1.1rem;padding:18px 18px 18px 50px;background:var(--paper);border-radius:12px}
 .find .btn{padding-inline:28px}
 .note{color:var(--muted);font-size:.88rem}
+.lead1{color:var(--muted);margin-top:-8px}
+.find input{border:2px solid var(--line)}
+.find input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 4px var(--accent-soft)}
+.firm{gap:18px}
+.must{display:grid;gap:14px;max-width:460px}
+.must input{font-size:1.05rem;padding:14px 16px}
+.must .hint{font-weight:400;color:var(--muted);font-size:.84rem;margin-top:-4px}
+.must input.need{border-color:#C8372D;box-shadow:0 0 0 4px #FBE3E0}
+.fcard{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--accent-soft);max-width:460px}
+.fcard .fok{width:34px;height:34px;border-radius:50%;background:var(--good);color:#fff;display:grid;place-items:center;flex:none;font-weight:700}
+.fcard div{min-width:0}
+.fcard b{display:block;font-size:1.05rem;overflow-wrap:anywhere}
+.fcard small{color:var(--muted);font-weight:400}
+.fcard .link{margin-left:auto}
+.q2{font-weight:700;margin-top:14px}
+.found .q2:first-child{margin-top:0}
+.btn-go{font-size:1.05rem;padding:16px 28px}
+.find input{flex-basis:150px}
+@media (max-width:520px){.find .btn{padding-inline:20px}}
+.must label[hidden]{display:none}
 .link{background:none;border:0;padding:0;font:inherit;font-size:.92rem;color:var(--accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer;justify-self:start;text-align:left}
 .note .link{font-size:inherit}
 .results{list-style:none;margin:0;padding:0;display:grid;gap:8px}
@@ -710,13 +733,17 @@ body:has(.bx-main input:focus) .callbar{display:none}
     var top = $('se-din-side').getBoundingClientRect().top + window.scrollY - 70;
     if (window.scrollY > top + 40) window.scrollTo({top: top, behavior: 'smooth'});
   }
+  ['c-name','c-phone','c-city'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ this.classList.remove('need'); }); });
   function fillFirm(f, fromCvr){
     $('firm').hidden = false;
-    $('found').innerHTML = fromCvr ? '<span class="tick">✓</span> Fundet. Ret gerne, hvis noget skal stå anderledes på siden.' : 'Skriv dine oplysninger, som de skal stå på siden.';
+    var known = fromCvr && f.name && f.city;
+    $('found').innerHTML = known ? '<div class="fcard"><span class="fok" aria-hidden="true"><svg viewBox="0 0 18 18" width="18" height="18"><path d="M4.5 9.5l3 3L13.5 6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>'+esc(f.name)+'</b><small>'+esc(f.addr || f.city)+'</small></div><button type="button" class="link" id="fix">Ret</button></div><p class="q2">Hvilket nummer skal stå på siden?</p>' : '<p class="q2">Det er alt, vi skal bruge:</p>';
+    $('l-name').hidden = $('l-city').hidden = !!known;
+    var fx = $('fix'); if (fx) fx.onclick = function(){ $('l-name').hidden = $('l-city').hidden = false; $('f-more').open = true; fx.remove(); $('c-name').focus(); };
     $('c-name').value = f.name || ''; $('c-phone').value = f.phone || ''; $('c-addr').value = f.addr || '';
     $('c-city').value = f.city || ''; $('c-mail').value = f.mail || ''; $('c-cvr').value = f.cvr || '';
     firm = {trade: f.trade || ''};
-    (fromCvr ? $('c-phone') : $('c-name')).focus({preventScroll:true});
+    ((known || f.name) ? $('c-phone') : $('c-name')).focus({preventScroll:true});
   }
   function guessTrade(t){
     t = (t || '').toLowerCase();
@@ -821,12 +848,12 @@ body:has(.bx-main input:focus) .callbar{display:none}
     return fetch('/api/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)}).then(function(r){ return r.ok; }).catch(function(){ return false; });
   }
   $('find').addEventListener('submit', function(e){ e.preventDefault(); if (hits.length) choose(act > -1 ? act : 0); else search(true); });
-  $('manual').onclick = function(){ $('results').innerHTML = ''; fillFirm(typed($('q').value.trim()), false); };
+  $('manual').onclick = function(){ seq++; clearTimeout(timer); hits = []; $('results').innerHTML = ''; fillFirm(typed($('q').value.trim()), false); };
 
   $('firm').addEventListener('submit', function(e){
     e.preventDefault();
     if (!$('c-name').value.trim() || !$('c-phone').value.trim() || !$('c-city').value.trim()){
-      $('found').textContent = 'Udfyld firmanavn, telefon og by, så siden kan vise dem.'; return;
+      $('l-name').hidden = $('l-city').hidden = false; var miss = !$('c-name').value.trim() ? $('c-name') : !$('c-phone').value.trim() ? $('c-phone') : $('c-city'); miss.focus(); miss.classList.add('need'); return;
     }
     firm.name = $('c-name').value.trim(); firm.phone = $('c-phone').value.trim(); firm.addr = $('c-addr').value.trim();
     firm.city = $('c-city').value.trim(); firm.mail = $('c-mail').value.trim(); firm.cvr = $('c-cvr').value.trim();
