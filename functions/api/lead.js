@@ -1,8 +1,8 @@
 // Receives a lead from the site and emails it to Dyreborg Studios via Web3Forms.
 // Needs the environment variable WEB3FORMS_KEY (free key from web3forms.com, sent to dyreborgstudios@gmail.com).
 // Optional: a KV namespace bound as LEADS keeps a copy of every lead.
-const FIELDS = ['kind', 'firm', 'cvr', 'city', 'firmPhone', 'trade', 'contact', 'phone', 'mail', 'web', 'msg'];
-const LABELS = { kind: 'Type', firm: 'Firma', cvr: 'CVR', city: 'By', firmPhone: 'Firmaets telefon', trade: 'Fag', contact: 'Kontaktperson', phone: 'Mobil', mail: 'Mail', web: 'Nuværende hjemmeside', msg: 'Besked' };
+const FIELDS = ['kind', 'firm', 'cvr', 'city', 'firmPhone', 'trade', 'contact', 'phone', 'mail', 'web', 'when', 'msg'];
+const LABELS = { kind: 'Type', firm: 'Firma', cvr: 'CVR', city: 'By', firmPhone: 'Firmaets telefon', trade: 'Fag', contact: 'Kontaktperson', phone: 'Mobil', mail: 'Mail', web: 'Nuværende hjemmeside', when: 'Ring helst', msg: 'Besked' };
 
 export async function onRequestPost({ request, env }) {
   let data;

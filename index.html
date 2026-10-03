@@ -192,19 +192,46 @@ details[open] summary::after{transform:rotate(45deg)}
 details p{padding-bottom:20px;color:var(--muted);max-width:66ch}
 
 /* form */
-.contact{background:var(--ink);color:var(--paper)}
-.contact .wrap{display:grid;gap:44px}
-@media (min-width:920px){.contact .wrap{grid-template-columns:1fr 1.1fr}}
+.contact{background:linear-gradient(180deg,var(--accent-soft),var(--paper) 85%);color:var(--ink);border-top:1px solid var(--line)}
+.contact .wrap{display:grid;gap:36px;align-items:start}
+@media (min-width:920px){.contact .wrap{grid-template-columns:1fr 1.05fr;gap:56px}}
 .contact .wrap>*{min-width:0}
-.contact .label{color:var(--ph)}
+.contact .label{color:var(--accent)}
 .contact h2{margin-top:14px}
-.contact .lead{color:color-mix(in srgb,var(--paper) 72%,transparent);margin-top:18px}
-.direct{margin-top:32px;display:grid;gap:14px}
-.direct div{display:grid;gap:2px}
-.direct dt{font:500 .74rem/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:color-mix(in srgb,var(--paper) 60%,transparent)}
-.direct dd{margin:0;font-size:1.25rem;font-weight:700}
-.direct .ph{color:var(--ink)}
-form.q{background:var(--surface);color:var(--ink);border-radius:var(--r);padding:clamp(22px,3vw,34px);display:grid;gap:16px}
+.contact h2 .it{color:var(--accent)}
+.contact .lead{color:var(--muted);margin-top:16px;max-width:30em}
+.c-steps{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:14px}
+.c-steps li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:center}
+.c-steps span{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1.5px solid var(--accent-2);color:var(--accent);font:600 .85rem/1 var(--mono)}
+.c-steps b{display:block;font-size:1rem}
+.c-steps small{color:var(--muted);font-size:.86rem}
+.c-direct{margin-top:28px;display:grid;gap:10px}
+@media (min-width:560px) and (max-width:919px){.c-direct{grid-template-columns:1fr 1fr}}
+.c-direct a{display:flex;align-items:center;gap:12px;text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;transition:border-color .15s,transform .15s;min-width:0}
+.c-direct a:hover{border-color:var(--accent);transform:translateY(-1px)}
+.c-direct .ci{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.c-direct svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.c-direct span:last-child{min-width:0}
+.c-direct small{display:block;font-size:.78rem;color:var(--muted)}
+.c-direct b{display:block;font-size:1rem;overflow-wrap:anywhere}
+.q-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.q-head b{font-size:1.2rem}
+.q-head small{color:var(--muted);font-size:.8rem}
+.when{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.when legend{font-weight:600;font-size:.92rem;margin-bottom:8px;padding:0}
+.when label{display:block;font-weight:500}
+.when input{position:absolute;opacity:0;width:1px;height:1px}
+.when span{display:inline-block;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;font-size:.92rem;transition:background .15s,border-color .15s}
+.when input:checked+span{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+.when input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.more{background:none;border:0;border-radius:0;padding:0}
+.more summary{display:inline-flex;align-items:center;gap:8px;padding:2px 0;font-weight:600;font-size:.92rem;color:var(--accent)}
+.more summary::after{content:none}
+.more summary::before{content:"+";display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);font-weight:700;transition:transform .2s}
+.more[open] summary::before{transform:rotate(45deg)}
+.more summary small{color:var(--muted);font-weight:500}
+.more-in{display:grid;gap:14px;margin-top:12px}
+form.q{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3vw,34px);display:grid;gap:18px;box-shadow:0 30px 60px -40px rgba(34,48,79,.45)}
 .row2{display:grid;gap:16px}
 @media (min-width:560px){.row2{grid-template-columns:1fr 1fr}}
 .row2>*{min-width:0}
@@ -1006,31 +1033,47 @@ body:has(.bx-main input:focus) .callbar{display:none}
 </div></section>
 
 <section id="udkast" class="contact"><div class="wrap">
-  <div>
+  <div class="c-side">
     <p class="label">Gratis udkast</p>
-    <h2>Vil du hellere ringes op?</h2>
-    <p class="lead">Udfyld formularen, så ringer jeg dig op og laver dit udkast sammen med dig. Det er gratis og forpligter dig ikke til noget.</p>
-    <dl class="direct">
-      <div><dt>Ring direkte</dt><dd class="mono">29 91 04 92</dd></div>
-      <div><dt>Mail</dt><dd>dyreborgstudios@gmail.com</dd></div>
-    </dl>
+    <h2>Vil du hellere <span class="it">ringes op?</span></h2>
+    <p class="lead">Skriv dit navn og nummer, så ringer jeg og laver dit udkast sammen med dig. Det er gratis og uforpligtende.</p>
+    <ol class="c-steps">
+      <li><span>1</span><div><b>Du udfylder formularen</b><small>Det tager under et minut</small></div></li>
+      <li><span>2</span><div><b>Jeg ringer dig op</b><small>Inden for en arbejdsdag</small></div></li>
+      <li><span>3</span><div><b>Du får dit udkast</b><small>Gratis, og du bestemmer selv</small></div></li>
+    </ol>
+    <div class="c-direct">
+      <a href="tel:+4529910492"><span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><span><small>Ring direkte</small><b class="mono">29 91 04 92</b></span></a>
+      <a href="mailto:dyreborgstudios@gmail.com"><span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 7 8.5-7"/></svg></span><span><small>Skriv en mail</small><b>dyreborgstudios@gmail.com</b></span></a>
+    </div>
   </div>
   <form class="q" id="lead" novalidate>
+    <p class="q-head"><b>Ring mig op</b><small>Felter med * skal udfyldes</small></p>
     <div class="row2">
-      <label for="f-name">Dit navn<input id="f-name" name="name" autocomplete="name" required></label>
-      <label for="f-phone">Telefon<input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></label>
+      <label for="f-name">Dit navn *<input id="f-name" name="name" autocomplete="name" required></label>
+      <label for="f-phone">Telefon *<input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></label>
     </div>
     <div class="row2">
       <label for="f-firm">Firmanavn<input id="f-firm" name="firm" autocomplete="organization"></label>
       <label for="f-trade">Branche
         <select id="f-trade" name="trade">
-          <option>Kloakmester</option><option>Elektriker</option><option>VVS</option><option>Tagdækker</option><option>Tømrer</option><option>Murer</option><option>Maler</option><option>Gulvlægger</option><option>Anlægsgartner</option><option>Låsesmed</option><option>Frisør</option><option>Negle og vipper</option><option>Fysioterapeut</option><option>Kiropraktor / massør</option><option>Autoværksted</option><option>Restaurant</option><option>Rengøring</option><option>Smed</option><option>Entreprenør</option><option>Træfælder</option><option>Facade- og algerens</option><option>Tandlæge</option><option>Massør / zoneterapeut</option><option>Personlig træner</option><option>Dyrlæge</option><option>Hundefrisør</option><option>Køreskole</option><option>Flyttefirma</option><option>Ejendomsservice</option><option>Andet</option>
+          <option value="">Vælg din branche</option><option>Kloakmester</option><option>Elektriker</option><option>VVS</option><option>Tagdækker</option><option>Tømrer</option><option>Murer</option><option>Maler</option><option>Gulvlægger</option><option>Anlægsgartner</option><option>Låsesmed</option><option>Frisør</option><option>Negle og vipper</option><option>Fysioterapeut</option><option>Kiropraktor / massør</option><option>Autoværksted</option><option>Restaurant</option><option>Rengøring</option><option>Smed</option><option>Entreprenør</option><option>Træfælder</option><option>Facade- og algerens</option><option>Tandlæge</option><option>Massør / zoneterapeut</option><option>Personlig træner</option><option>Dyrlæge</option><option>Hundefrisør</option><option>Køreskole</option><option>Flyttefirma</option><option>Ejendomsservice</option><option>Andet</option>
         </select>
       </label>
     </div>
-    <label for="f-web">Nuværende hjemmeside <small>(hvis du har en)</small><input id="f-web" name="web" inputmode="url" placeholder="fx ditfirma.dk"></label>
-    <label for="f-msg">Noget, vi skal vide? <small>(valgfrit)</small><textarea id="f-msg" name="msg" placeholder="Fx: Vi laver mest separatkloakering i Aalborg-området."></textarea></label>
-    <button class="btn btn-a" type="submit">Få mit gratis udkast</button>
+    <fieldset class="when"><legend>Hvornår passer det bedst?</legend>
+      <label><input type="radio" name="when" value="Når som helst" checked><span>Når som helst</span></label>
+      <label><input type="radio" name="when" value="Formiddag"><span>Formiddag</span></label>
+      <label><input type="radio" name="when" value="Eftermiddag"><span>Eftermiddag</span></label>
+      <label><input type="radio" name="when" value="Aften"><span>Aften</span></label>
+    </fieldset>
+    <details class="more"><summary>Tilføj hjemmeside eller besked <small>(valgfrit)</small></summary>
+      <div class="more-in">
+        <label for="f-web">Nuværende hjemmeside<input id="f-web" name="web" inputmode="url" placeholder="fx ditfirma.dk"></label>
+        <label for="f-msg">Besked<textarea id="f-msg" name="msg" placeholder="Fx: Vi laver mest separatkloakering i Aalborg-området."></textarea></label>
+      </div>
+    </details>
+    <button class="btn btn-a" type="submit">Ring mig op</button>
     <p class="ok" id="ok" role="status" hidden></p>
     <p class="small">Vi bruger kun dine oplysninger til at kontakte dig om dit udkast. Læs <button type="button" class="link" data-legal="privatliv" style="font-size:inherit">privatlivspolitikken</button>.</p>
   </form>
@@ -1109,7 +1152,7 @@ document.getElementById('lead').addEventListener('submit', function (e) {
   }
   var form = this, btn = form.querySelector('button[type=submit]');
   btn.disabled = true; ok.textContent = 'Sender…';
-  fetch('/api/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({kind: 'Kontaktformular', contact: name.value.trim(), phone: phone.value.trim(), firm: form.firm.value.trim(), trade: form.trade.value, web: form.web.value.trim(), msg: form.msg.value.trim()})})
+  fetch('/api/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({kind: 'Kontaktformular', contact: name.value.trim(), phone: phone.value.trim(), firm: form.firm.value.trim(), trade: form.trade.value, web: form.web.value.trim(), msg: form.msg.value.trim(), when: form.when ? form.when.value : ''})})
     .then(function(r){ if (!r.ok) throw 0; ok.textContent = 'Tak, ' + name.value.trim().split(' ')[0] + '. Jeg ringer dig op inden for en arbejdsdag.'; form.reset(); })
     .catch(function(){ ok.textContent = 'Beskeden kunne ikke sendes. Ring på 29 91 04 92 eller skriv til dyreborgstudios@gmail.com.'; })
     .then(function(){ btn.disabled = false; });
